@@ -1,26 +1,39 @@
+import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 interface TicketID {
-  id?: number
+  id: number
 }
 
 interface TicketDetails {
   params: {
-    id: string
+    id: number
   }
 }
 export const dynamicParams = true
+
+export const generateMetadata = async ({
+  params,
+}: TicketDetails): Promise<Metadata> => {
+  const { id } = params
+  const res = await fetch(`http://localhost:4000/tickets/${id}`)
+  const data: Ticket = await res.json()
+
+  return {
+    title: `Helpdesk | ${data.title}`,
+  }
+}
 
 export const generateStaticParams = async (): Promise<TicketID[]> => {
   const res = await fetch('http://localhost:4000/tickets')
   const tickets: Ticket[] = await res.json()
 
   return tickets.map((ticket) => ({
-    id: ticket.id,
+    id: ticket.id!,
   }))
 }
 
-const getTicketById = async (id: string): Promise<Ticket> => {
+const getTicketById = async (id: number): Promise<Ticket> => {
   const res = await fetch(`http://localhost:4000/tickets/${id}`, {
     next: {
       revalidate: 60,
