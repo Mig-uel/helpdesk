@@ -1,7 +1,7 @@
 type Priority = 'low' | 'medium' | 'high'
 
 interface Ticket {
-  id: number
+  id?: number
   title: string
   body: string
   priority: Priority
