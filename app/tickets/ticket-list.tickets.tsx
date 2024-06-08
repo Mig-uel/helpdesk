@@ -1,5 +1,9 @@
 const getTickets = async (): Promise<Ticket[]> => {
-  const res = await fetch('http://localhost:4000/tickets')
+  const res = await fetch('http://localhost:4000/tickets', {
+    next: {
+      revalidate: 0, // use 0 to opt out of using cache
+    },
+  })
   return res.json()
 }
 
