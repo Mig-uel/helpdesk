@@ -1,6 +1,11 @@
 import { Suspense } from 'react'
+import { Metadata } from 'next'
 import TicketList from './ticket-list.tickets'
 import Loading from '../loading'
+
+export const metadata: Metadata = {
+  title: 'Helpdesk | Tickets',
+}
 
 const Tickets = () => {
   return (
