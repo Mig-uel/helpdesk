@@ -1,7 +1,20 @@
+interface TicketID {
+  id: number
+}
+
 interface TicketDetails {
   params: {
     id: string
   }
+}
+
+export const generateStaticParams = async (): Promise<TicketID[]> => {
+  const res = await fetch('http://localhost:4000/tickets')
+  const tickets: Ticket[] = await res.json()
+
+  return tickets.map((ticket) => ({
+    id: ticket.id,
+  }))
 }
 
 const getTicketById = async (id: string): Promise<Ticket> => {
