@@ -1,3 +1,5 @@
+import { notFound } from 'next/navigation'
+
 interface TicketID {
   id: number
 }
@@ -7,6 +9,7 @@ interface TicketDetails {
     id: string
   }
 }
+export const dynamicParams = true
 
 export const generateStaticParams = async (): Promise<TicketID[]> => {
   const res = await fetch('http://localhost:4000/tickets')
@@ -23,6 +26,8 @@ const getTicketById = async (id: string): Promise<Ticket> => {
       revalidate: 60,
     },
   })
+
+  if (!res.ok) notFound()
 
   return res.json()
 }
