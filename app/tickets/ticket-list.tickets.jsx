@@ -6,7 +6,17 @@ const getTickets = async () => {
 const Tickets = async () => {
   const tickets = await getTickets()
 
-  return <div></div>
+  return (
+    <>
+      {tickets.map((ticket) => (
+        <div key={ticket.id} className='card my-5'>
+          <h3>{ticket.title}</h3>
+          <p>{ticket.body.slice(0, 200)}...</p>
+          <div className={`pill.${ticket.priority}`}></div>
+        </div>
+      ))}
+    </>
+  )
 }
 
 export default Tickets
