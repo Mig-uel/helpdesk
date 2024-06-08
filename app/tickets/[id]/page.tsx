@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 
 interface TicketID {
-  id: number
+  id?: number
 }
 
 interface TicketDetails {
