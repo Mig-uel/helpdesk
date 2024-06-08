@@ -3,7 +3,7 @@ const getTickets = async (): Promise<Ticket[]> => {
   return res.json()
 }
 
-const Tickets = async () => {
+const TicketList = async () => {
   const tickets = await getTickets()
 
   return (
@@ -24,4 +24,4 @@ const Tickets = async () => {
   )
 }
 
-export default Tickets
+export default TicketList
