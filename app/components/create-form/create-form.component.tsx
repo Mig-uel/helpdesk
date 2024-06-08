@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 type Title = string
@@ -14,8 +14,32 @@ const CreateForm = () => {
   const [priority, setPriority] = useState<Priority>('low')
   const [isLoading, setIsLoading] = useState<IsLoading>(false)
 
+  // submit handler
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    setIsLoading(true)
+
+    const ticket: Ticket = {
+      title,
+      body,
+      priority,
+      user_email: 'mario@email.com',
+    }
+
+    const res = await fetch('http://localhost:4000/tickets', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(ticket),
+    })
+
+    if (res.status === 201) {
+      router.refresh()
+      router.push('/tickets')
+    }
+  }
+
   return (
-    <form className='w-1/2'>
+    <form className='w-1/2' onSubmit={handleSubmit}>
       <label>
         <span>Title:</span>
         <input
