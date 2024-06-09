@@ -2,12 +2,12 @@ import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 
 interface TicketID {
-  id: number
+  id: string
 }
 
 interface TicketDetails {
   params: {
-    id: number
+    id: string
   }
 }
 export const dynamicParams = true
@@ -33,7 +33,7 @@ export const generateStaticParams = async (): Promise<TicketID[]> => {
   }))
 }
 
-const getTicketById = async (id: number): Promise<Ticket> => {
+const getTicketById = async (id: string): Promise<Ticket> => {
   const res = await fetch(`http://localhost:4000/tickets/${id}`, {
     next: {
       revalidate: 60,
