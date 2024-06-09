@@ -17,15 +17,17 @@ export const GET = async (
   { params }: Params
 ): Promise<NextResponse<Ticket | Error>> => {
   const { id } = params
+
   const res = await fetch(`http://localhost:4000/tickets/${id}`)
 
-  const ticket = await res.json()
-
-  if (!res.ok)
+  if (!res.ok) {
     return NextResponse.json(
       { error: 'Ticket does not exists!' },
       { status: 404 }
     )
+  }
+
+  const ticket: Ticket = await res.json()
 
   return NextResponse.json(ticket, { status: 200 })
 }
