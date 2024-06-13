@@ -1,3 +1,5 @@
+'use client'
+
 import AuthForm from '@/app/components/auth-form/auth-form.component'
 
 type Email = string
