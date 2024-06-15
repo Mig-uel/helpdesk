@@ -1,8 +1,15 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Logo from './dojo-logo.png'
+import {
+  AuthResponse,
+  Session,
+  User,
+  UserResponse,
+} from '@supabase/supabase-js'
 
-const Navbar = () => {
+const Navbar = ({ user }: Session) => {
+  // console.log(user)
   return (
     <nav>
       <Image
@@ -15,6 +22,7 @@ const Navbar = () => {
       <h1>Helpdesk</h1>
       <Link href='/'>Dashboard</Link>
       <Link href='/tickets'>Tickets</Link>
+      {user && <span>Hello, {user.email}</span>}
     </nav>
   )
 }
