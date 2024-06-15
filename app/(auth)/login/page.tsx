@@ -12,8 +12,6 @@ const Login = () => {
     password: Password
   ) => {
     e.preventDefault()
-
-    console.log(email, password)
   }
 
   return (
