@@ -16,7 +16,7 @@ const LogoutButton = ({ text }: { text: string }) => {
 
       router.push('/login')
     } catch (error) {
-      console.log(error)
+      console.log((error as Error).message)
     }
   }
 
