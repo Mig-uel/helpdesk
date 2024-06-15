@@ -8,7 +8,7 @@ import {
   UserResponse,
 } from '@supabase/supabase-js'
 
-const Navbar = ({ user }: Session) => {
+const Navbar = ({ user }: Session & any) => {
   // console.log(user)
   return (
     <nav>
