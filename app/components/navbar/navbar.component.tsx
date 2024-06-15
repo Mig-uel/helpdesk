@@ -5,7 +5,6 @@ import { Session } from '@supabase/supabase-js'
 import LogoutButton from '../log-out-button.component'
 
 const Navbar = ({ user }: Session & any) => {
-  // console.log(user)
   return (
     <nav>
       <Image
