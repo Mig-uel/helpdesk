@@ -1,12 +1,8 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import Logo from './dojo-logo.png'
-import {
-  AuthResponse,
-  Session,
-  User,
-  UserResponse,
-} from '@supabase/supabase-js'
+import { Session } from '@supabase/supabase-js'
+import LogoutButton from '../log-out-button.component'
 
 const Navbar = ({ user }: Session & any) => {
   // console.log(user)
@@ -21,8 +17,12 @@ const Navbar = ({ user }: Session & any) => {
       />
       <h1>Helpdesk</h1>
       <Link href='/'>Dashboard</Link>
-      <Link href='/tickets'>Tickets</Link>
+      <Link href='/tickets' className='mr-auto'>
+        Tickets
+      </Link>
+
       {user && <span>Hello, {user.email}</span>}
+      <LogoutButton text={user ? 'Log out' : 'Login'} />
     </nav>
   )
 }
