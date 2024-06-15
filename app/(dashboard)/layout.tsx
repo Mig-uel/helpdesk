@@ -11,13 +11,13 @@ const DashboardLayout = async ({
   children: React.ReactNode
 }>) => {
   const supabase = createServerComponentClient({ cookies })
-  const { data } = await supabase.auth.getSession()
+  const { data } = await supabase.auth.getUser()
 
-  if (!data.session) redirect('/login')
+  if (!data.user) redirect('/login')
 
   return (
     <>
-      <Navbar user={data?.session?.user} />
+      <Navbar user={data.user} />
       {children}
     </>
   )
