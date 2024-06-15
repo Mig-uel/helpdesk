@@ -4,11 +4,11 @@ import { cookies } from 'next/headers'
 
 export const GET = async (request: NextRequest) => {
   const url = new URL(request.url)
-  const tokenSearchParam = url.searchParams.get('token')
+  const codeSearchParam = url.searchParams.get('code')
 
-  if (tokenSearchParam) {
+  if (codeSearchParam) {
     const supabase = createRouteHandlerClient({ cookies })
-    await supabase.auth.exchangeCodeForSession(tokenSearchParam)
+    await supabase.auth.exchangeCodeForSession(codeSearchParam)
   }
 
   return NextResponse.redirect(url.origin)
