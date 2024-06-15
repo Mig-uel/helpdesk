@@ -1,6 +1,7 @@
 'use client'
 import { FormEvent, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { PostgrestError } from '@supabase/supabase-js'
 
 type Title = string
 type Body = string
@@ -13,28 +14,36 @@ const CreateForm = () => {
   const [body, setBody] = useState<Body>('')
   const [priority, setPriority] = useState<Priority>('low')
   const [isLoading, setIsLoading] = useState<IsLoading>(false)
+  const [formError, setFormError] = useState<string>('')
 
   // submit handler
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    setFormError('')
     setIsLoading(true)
 
     const ticket: Ticket = {
       title,
       body,
       priority,
-      user_email: 'mario@email.com',
     }
 
-    const res = await fetch('http://localhost:4000/tickets', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(ticket),
-    })
+    try {
+      const res = await fetch('http://localhost:3000/api/tickets', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(ticket),
+      })
 
-    if (res.status === 201) {
+      const { data, error }: { data: Ticket; error: PostgrestError | null } =
+        await res.json()
+
+      if (error) throw new Error(error.message)
+
       router.refresh()
       router.push('/tickets')
+    } catch (error) {
+      setFormError((error as Error).message)
     }
   }
 
@@ -72,6 +81,8 @@ const CreateForm = () => {
         {isLoading && <span>Adding...</span>}
         {!isLoading && <span>Add Ticket</span>}
       </button>
+
+      {}
     </form>
   )
 }
