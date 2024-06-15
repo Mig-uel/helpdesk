@@ -5,5 +5,5 @@ interface Ticket {
   title: string
   body: string
   priority: Priority
-  user_email: string
+  user_email?: string
 }
