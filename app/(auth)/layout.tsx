@@ -1,6 +1,15 @@
+// libs
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
+import { cookies } from 'next/headers'
 import Link from 'next/link'
+import { redirect } from 'next/navigation'
 
-const AuthLayout = ({ children }: { children: React.ReactNode }) => {
+const AuthLayout = async ({ children }: { children: React.ReactNode }) => {
+  const supabase = createServerComponentClient({ cookies })
+  const { data } = await supabase.auth.getUser()
+
+  if (data.user) redirect('/')
+
   return (
     <>
       <nav>
