@@ -3,7 +3,7 @@
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs'
 import { useRouter } from 'next/navigation'
 
-const LogoutButton = ({ text }: { text: string }) => {
+const LogoutButton = () => {
   const router = useRouter()
 
   const logoutHandler = async () => {
@@ -22,7 +22,7 @@ const LogoutButton = ({ text }: { text: string }) => {
 
   return (
     <button className='btn-primary' onClick={logoutHandler}>
-      {text}
+      Log out
     </button>
   )
 }
