@@ -21,7 +21,7 @@ const Navbar = ({ user }: Session & any) => {
       </Link>
 
       {user && <span>Hello, {user.email}</span>}
-      <LogoutButton text={user ? 'Log out' : 'Login'} />
+      <LogoutButton />
     </nav>
   )
 }
