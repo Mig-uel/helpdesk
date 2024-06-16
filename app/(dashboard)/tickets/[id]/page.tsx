@@ -1,5 +1,8 @@
+import { cookies } from 'next/headers'
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
+import { PostgrestSingleResponse } from '@supabase/supabase-js'
 
 interface TicketID {
   id: string
@@ -16,11 +19,15 @@ export const generateMetadata = async ({
   params,
 }: TicketDetails): Promise<Metadata> => {
   const { id } = params
-  const res = await fetch(`http://localhost:4000/tickets/${id}`)
-  const data: Ticket = await res.json()
+  const supabase = createServerComponentClient({ cookies })
+  const { data: ticket }: PostgrestSingleResponse<Ticket> = await supabase
+    .from('tickets')
+    .select()
+    .eq('id', id)
+    .single()
 
   return {
-    title: `Helpdesk | ${data.title}`,
+    title: `Helpdesk | ${ticket?.title || 'Ticket not found...'}`,
   }
 }
 
@@ -34,19 +41,21 @@ export const generateStaticParams = async (): Promise<TicketID[]> => {
 }
 
 const getTicketById = async (id: string): Promise<Ticket> => {
-  const res = await fetch(`http://localhost:4000/tickets/${id}`, {
-    next: {
-      revalidate: 60,
-    },
-  })
+  const supabase = await createServerComponentClient({ cookies })
+  const { data: ticket }: PostgrestSingleResponse<Ticket> = await supabase
+    .from('tickets')
+    .select()
+    .eq('id', id)
+    .single()
 
-  if (!res.ok) notFound()
+  if (!ticket) notFound()
 
-  return res.json()
+  return ticket
 }
 
 const TicketDetails = async ({ params }: TicketDetails) => {
-  const ticket = await getTicketById(params.id)
+  const { id } = params
+  const ticket = await getTicketById(id)
 
   return (
     <main>
