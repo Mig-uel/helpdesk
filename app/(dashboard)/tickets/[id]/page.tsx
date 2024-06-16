@@ -1,8 +1,12 @@
+// libs
 import { cookies } from 'next/headers'
 import { createServerComponentClient } from '@supabase/auth-helpers-nextjs'
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { PostgrestSingleResponse } from '@supabase/supabase-js'
+
+// components
+import DeleteButton from '../../../components/delete-button.component'
 
 interface TicketID {
   id: string
@@ -57,10 +61,18 @@ const TicketDetails = async ({ params }: TicketDetails) => {
   const { id } = params
   const ticket = await getTicketById(id)
 
+  const supabase = createServerComponentClient({ cookies })
+  const { data } = await supabase.auth.getSession()
+
   return (
     <main>
       <nav>
         <h2>Ticket Details</h2>
+        <div className='ml-auto'>
+          {data.session?.user.email === ticket.user_email && (
+            <DeleteButton id={ticket.id} />
+          )}
+        </div>
       </nav>
 
       <div className='card'>
