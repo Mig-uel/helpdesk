@@ -1,13 +1,7 @@
-'use client'
-import { useState } from 'react'
 import { addTicket } from '@/app/(dashboard)/tickets/actions'
-
-type IsLoading = boolean
+import SubmitButton from '../submit-button/submit-button.component'
 
 const CreateForm = () => {
-  const [isLoading, setIsLoading] = useState<IsLoading>(false)
-  const [formError, setFormError] = useState<string>('')
-
   return (
     <form className='w-1/2' action={addTicket}>
       <label htmlFor='title'>
@@ -26,12 +20,7 @@ const CreateForm = () => {
           <option value='high'>High Priority</option>
         </select>
       </label>
-      {formError && <p className='error'>{formError}</p>}
-
-      <button className='btn-primary' disabled={isLoading}>
-        {isLoading && <span>Adding...</span>}
-        {!isLoading && <span>Add Ticket</span>}
-      </button>
+      <SubmitButton />
     </form>
   )
 }
