@@ -1,79 +1,26 @@
 'use client'
-import { FormEvent, useState } from 'react'
-import { useRouter } from 'next/navigation'
-import { PostgrestError } from '@supabase/supabase-js'
+import { useState } from 'react'
+import { addTicket } from '@/app/(dashboard)/tickets/actions'
 
-type Title = string
-type Body = string
 type IsLoading = boolean
 
 const CreateForm = () => {
-  const router = useRouter()
-
-  const [title, setTitle] = useState<Title>('')
-  const [body, setBody] = useState<Body>('')
-  const [priority, setPriority] = useState<Priority>('low')
   const [isLoading, setIsLoading] = useState<IsLoading>(false)
   const [formError, setFormError] = useState<string>('')
 
-  // submit handler
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    setFormError('')
-    setIsLoading((prev) => !prev)
-
-    const ticket: Ticket = {
-      title,
-      body,
-      priority,
-    }
-
-    try {
-      const res = await fetch('http://localhost:3000/api/tickets', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(ticket),
-      })
-
-      const { data, error }: { data: Ticket; error: PostgrestError | null } =
-        await res.json()
-
-      if (error) throw new Error(error.message)
-
-      setIsLoading((prev) => !prev)
-      router.refresh()
-      router.push('/tickets')
-    } catch (error) {
-      setIsLoading((prev) => !prev)
-      setFormError((error as Error).message)
-    }
-  }
-
   return (
-    <form className='w-1/2' onSubmit={handleSubmit}>
-      <label>
+    <form className='w-1/2' action={addTicket}>
+      <label htmlFor='title'>
         <span>Title:</span>
-        <input
-          required
-          type='text'
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-        />
+        <input name='title' required type='text' />
       </label>
-      <label>
+      <label htmlFor='body'>
         <span>Body:</span>
-        <textarea
-          required
-          onChange={(e) => setBody(e.target.value)}
-          value={body}
-        />
+        <textarea name='body' required />
       </label>
-      <label>
+      <label htmlFor='priority'>
         <span>Priority:</span>
-        <select
-          value={priority}
-          onChange={(e) => setPriority(e.target.value as Priority)}
-        >
+        <select name='priority'>
           <option value='low'>Low Priority</option>
           <option value='medium'>Medium Priority</option>
           <option value='high'>High Priority</option>
