@@ -18,8 +18,8 @@ const getTickets = async (): Promise<{
 const TicketList = async () => {
   const { data: tickets, error } = await getTickets()
 
-  return tickets ? (
-    tickets?.map((ticket) => (
+  return tickets !== null && tickets.length > 0 ? (
+    tickets.map((ticket) => (
       <div key={ticket.id} className='card my-5'>
         <Link href={`/tickets/${ticket.id}`}>
           <h3>{ticket.title}</h3>
@@ -30,10 +30,10 @@ const TicketList = async () => {
         </Link>
       </div>
     ))
+  ) : tickets !== null && tickets.length === 0 ? (
+    <p>There are no open tickets...</p>
   ) : (
-    <p className='text-center'>
-      {error ? 'Something went wrong...' : 'There are no open tickets...'}
-    </p>
+    error && <p className='error'>Something went wrong :X</p>
   )
 }
 
