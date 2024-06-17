@@ -35,15 +35,6 @@ export const generateMetadata = async ({
   }
 }
 
-export const generateStaticParams = async (): Promise<TicketID[]> => {
-  const res = await fetch('http://localhost:4000/tickets')
-  const tickets: Ticket[] = await res.json()
-
-  return tickets.map((ticket) => ({
-    id: ticket.id!,
-  }))
-}
-
 const getTicketById = async (id: string): Promise<Ticket> => {
   const supabase = await createServerComponentClient({ cookies })
   const { data: ticket }: PostgrestSingleResponse<Ticket> = await supabase
