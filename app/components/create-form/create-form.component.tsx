@@ -20,7 +20,7 @@ const CreateForm = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setFormError('')
-    setIsLoading(true)
+    setIsLoading((prev) => !prev)
 
     const ticket: Ticket = {
       title,
@@ -40,9 +40,11 @@ const CreateForm = () => {
 
       if (error) throw new Error(error.message)
 
+      setIsLoading((prev) => !prev)
       router.refresh()
       router.push('/tickets')
     } catch (error) {
+      setIsLoading((prev) => !prev)
       setFormError((error as Error).message)
     }
   }
@@ -77,12 +79,12 @@ const CreateForm = () => {
           <option value='high'>High Priority</option>
         </select>
       </label>
+      {formError && <p className='error'>{formError}</p>}
+
       <button className='btn-primary' disabled={isLoading}>
         {isLoading && <span>Adding...</span>}
         {!isLoading && <span>Add Ticket</span>}
       </button>
-
-      {}
     </form>
   )
 }
